@@ -2,5 +2,10 @@
 language: ruby
 cache: bundler
 rvm:
-  - 3.0.3
+  - 2.6
+  - 3.0
+  - 3.1
+gemfile:
+  - gemfiles/rails_6.gemfile
+  - gemfiles/rails_7.gemfile
 before_install: gem install bundler -v 2.3.0

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Runs the test suite locally
+bundle exec appraisal rake test

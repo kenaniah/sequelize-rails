@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     sequelize-rails (0.1.0)
       appraisal
@@ -163,6 +163,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest (~> 5.0)
+  rails (~> 7.0)
   rake (~> 13.0)
   sequelize-rails!
   standard (~> 1.3)
