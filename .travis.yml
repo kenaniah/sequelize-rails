@@ -4,7 +4,6 @@ cache: bundler
 rvm:
   - 2.6
   - 3.0
-  - 3.1
 gemfile:
   - gemfiles/rails_6.gemfile
   - gemfiles/rails_7.gemfile
