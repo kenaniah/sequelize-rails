@@ -2,7 +2,6 @@ PATH
   remote: ..
   specs:
     sequelize-rails (0.1.0)
-      appraisal
       rails (>= 6.0.0)
       sequel (>= 5.0.0)
 
@@ -68,6 +67,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    ansi (1.5.0)
     appraisal (2.4.1)
       bundler
       rake
@@ -90,6 +90,11 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
+    minitest-reporters (1.4.3)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     nio4r (2.5.8)
     nokogiri (1.12.5-arm64-darwin)
       racc (~> 1.4)
@@ -169,7 +174,9 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  appraisal
   minitest (~> 5.0)
+  minitest-reporters
   rails (~> 6.0)
   rake (~> 13.0)
   sequelize-rails!

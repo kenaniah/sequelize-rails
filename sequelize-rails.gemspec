@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/sequelize/rails/version"
+require_relative "lib/sequelize_rails/version"
 
 Gem::Specification.new do |spec|
   spec.name = "sequelize-rails"
-  spec.version = Sequelize::Rails::VERSION
+  spec.version = ::SequelizeRails::VERSION
   spec.authors = ["Kenaniah Cerny"]
   spec.email = ["kenaniah@gmail.com"]
 
@@ -31,12 +31,11 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "sequel", ">= 5.0.0"
 
-  # Development dependencies
-  spec.add_dependency "appraisal"
+  spec.add_development_dependency "appraisal"
+  spec.add_development_dependency "minitest-reporters"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
