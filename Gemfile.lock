@@ -104,6 +104,7 @@ GEM
     parallel (1.21.0)
     parser (3.0.3.2)
       ast (~> 2.4.1)
+    pg (1.2.3)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -176,6 +177,7 @@ DEPENDENCIES
   appraisal
   minitest (~> 5.0)
   minitest-reporters
+  pg
   pry
   rake (~> 13.0)
   sequelize-rails!
