@@ -14,5 +14,9 @@ module SequelizeRails
       ::Sequel::Model.send :extend, ::ActiveModel::Translation
       ::Sequel::Model.send :extend, ::SequelizeRails::TranslationSupport
     end
+
+    rake_tasks do
+      load File.expand_path("../tasks.rake", __dir__)
+    end
   end
 end

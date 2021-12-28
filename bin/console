@@ -4,6 +4,9 @@
 require "bundler/setup"
 require "sequelize-rails"
 
+# Load the rails application
+require_relative "../test/dummy/config/environment"
+
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
