@@ -1,0 +1,11 @@
+<% module_namespacing do -%>
+class ApplicationRecord < Sequel::Model
+  # Makes this an abstract model
+  dataset = nil
+end
+
+# Allows subclassed models to be initialzed with a customized dataset
+def ApplicationRecord *args
+  ApplicationRecord.Model *args
+end
+<% end -%>

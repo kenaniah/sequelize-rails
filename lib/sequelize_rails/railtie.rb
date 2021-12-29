@@ -3,7 +3,7 @@ require "rails"
 
 module SequelizeRails
   class Railtie < Rails::Railtie
-    config.app_generators.orm :sequel, migration: :sequel_migration
+    config.app_generators.orm :sequelize_rails, migration: :sequel_migration
 
     initializer "sequel.plugins" do
       ::Sequel::Model.plugin :active_model
