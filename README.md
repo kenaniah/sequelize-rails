@@ -37,3 +37,17 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/kenani
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Roadmap
+
+ - Support `rails console --sandbox` (auto rollback all transactions)
+ - Support logging
+ - Support db rake tasks
+ - Support database yaml file
+ - Support multiple databases
+ - Support reloading (disconnect all connections)
+ - Support ActiveRecord plugins / conventions (shims)
+ - Support postgresql custom format dump & restore
+ - Support db console (namely, ENV['DATABASE_URL'])
+ - Support generators (including orm)
+ - Support migration generator (and parsed attributes)
