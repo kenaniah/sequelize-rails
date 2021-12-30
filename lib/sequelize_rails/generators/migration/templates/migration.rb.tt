@@ -1,0 +1,9 @@
+Sequel.migration do
+  up do
+    # Add forward migration code here
+  end
+
+  down do
+    # Add rollback migration code here
+  end
+end
