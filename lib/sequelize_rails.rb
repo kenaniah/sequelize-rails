@@ -11,7 +11,6 @@ require "sequelize_rails/generators/model/model_generator"
 require "sequelize_rails/generators/application_record/application_record_generator"
 
 module SequelizeRails
-
   mattr_accessor :configurations
 
   # Opens a database connection based on the given configuration name
@@ -22,5 +21,4 @@ module SequelizeRails
     config[:pool_timeout] ||= config.delete(:timeout) / 1000 if config[:timeout]
     Sequel.connect config
   end
-
 end

@@ -10,14 +10,15 @@ module SequelizeRails
       end
 
       private
-        def application_record_file_name
-          @application_record_file_name ||=
-            if namespaced?
-              "app/models/#{namespaced_path}/application_record.rb"
-            else
-              "app/models/application_record.rb"
-            end
-        end
+
+      def application_record_file_name
+        @application_record_file_name ||=
+          if namespaced?
+            "app/models/#{namespaced_path}/application_record.rb"
+          else
+            "app/models/application_record.rb"
+          end
+      end
     end
   end
 end

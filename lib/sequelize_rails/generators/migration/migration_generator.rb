@@ -14,7 +14,6 @@ module SequelizeRails
       def create_migration_file
         migration_template "migration.rb", "db/migrate/#{file_name}.rb"
       end
-
     end
   end
 end
