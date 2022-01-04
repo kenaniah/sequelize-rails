@@ -28,3 +28,12 @@ module SequelizeRails
     end
   end
 end
+
+# Monkey patch to allow Rails DB Console to load properly
+module DBConsoleMonkeyPatch
+  def initialize options = {}
+    require "active_record"
+    super
+  end
+end
+Rails::DBConsole.prepend DBConsoleMonkeyPatch

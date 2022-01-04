@@ -11,12 +11,13 @@ databases = ActiveRecord::Tasks::DatabaseTasks.setup_initial_database_yaml
 
 ns = :db
 db_namespace = namespace ns do
-  desc "Set the environment value for the database"
-  task "environment:set" => :load_config do
-    raise ActiveRecord::EnvironmentStorageError unless ActiveRecord::InternalMetadata.enabled?
-    ActiveRecord::InternalMetadata.create_table
-    ActiveRecord::InternalMetadata[:environment] = ActiveRecord::Base.connection.migration_context.current_environment
-  end
+  # Changed: this task was commented out
+  # desc "Set the environment value for the database"
+  # task "environment:set" => :load_config do
+  #   raise ActiveRecord::EnvironmentStorageError unless ActiveRecord::InternalMetadata.enabled?
+  #   ActiveRecord::InternalMetadata.create_table
+  #   ActiveRecord::InternalMetadata[:environment] = ActiveRecord::Base.connection.migration_context.current_environment
+  # end
 
   task check_protected_environments: :load_config do
     ActiveRecord::Tasks::DatabaseTasks.check_protected_environments!
@@ -92,53 +93,84 @@ db_namespace = namespace ns do
     ActiveRecord::Tasks::DatabaseTasks.purge_current
   end
 
+  ############################################################################
+  # end of tasks from activerecord/lib/active_record/railties/databases.rake #
+  ############################################################################
+
+  # Initializes a database migrator
+  def migrator opts = {}
+    if ENV["VERSION"] && ENV["VERSION"].to_i > 0
+      opts[:version] = ENV["VERSION"].to_i
+    end
+    ::Sequel::TimestampMigrator.new(Sequel::DATABASES.first, ActiveRecord::Migrator.migrations_paths.first, opts)
+  end
+
+  # Opens a connection to the primary database and loads the migrator
+  task connection: [:environment] do
+    require "sequel/core"
+    Sequel.extension :migration
+    SequelizeRails.connect_to :primary
+  end
+
   # desc "Backs up the databse from DATABASE_URL or config/database.yml for the current RAILS_ENV"
   # task dump: [] do
   # end
 
   desc "Migrate the database"
-  task migrate: [:"migrate:load"] do
+  task migrate: [:connection] do
+    migrator.run
   end
 
   namespace :migrate do
-    # Opens a connection to the primary database and loads the migrator
-    task load: [:environment] do
-      require "sequel/core"
-      Sequel.extension :migration
-      SequelizeRails.connect_to :primary
+
+    # desc "Runs the \"down\" method for the last applied migration"
+    task down: [:connection] do
+      target = (migrator.applied_migrations[-2] || "0_").split("_", 2).first.to_i
+      migrator(target: target).run
     end
 
-    desc "Runs the \"down\" method for a given migration"
-    task down: [:load] do
-    end
-
-    desc "Runs the \"up\" method for a given migration"
-    task up: [:load] do
+    # desc "Runs the \"up\" method for the next pending migration"
+    task up: [:connection] do
+      pending = migrator.migration_tuples.first
+      if pending
+        target = pending[1].split("_", 2).first.to_i
+        migrator(target: target).run
+      end
     end
 
     desc "Rolls back the last migration and re-runs it"
-    task redo: [:load] do
-    end
+    task redo: [:down, :up]
 
     desc "Displays the status of the database migrations"
-    task status: [:load] do
+    task status: [:connection] do
+      pending = migrator.migration_tuples.count
+      if pending == 1
+        puts "1 pending migration"
+      else
+        puts "#{pending} pending migrations"
+      end
     end
   end
 
   desc "Runs #{ns}:setup if the database does not exist or #{ns}:migrate if it does"
-  task prepare: [:load] do
+  task prepare: [] do
+    begin
+      Rake::Task[:"#{ns}:connection"].invoke
+      Rake::Task[:"#{ns}:migrate"].invoke
+    rescue Sequel::DatabaseConnectionError
+      Rake::Task[:"#{ns}:setup"].invoke
+    end
   end
 
-  desc "Runs #{ns}:drop and then #{ns}:setup"
+  desc "Runs #{ns}:drop, #{ns}:setup"
   task reset: [:"#{ns}:drop", :"#{ns}:setup"]
 
-  desc "Restores the backup for database from DATABASE_URL or config/database.yml for the current RAILS_ENV"
-  task restore: [:load] do
-  end
+  # desc "Restores the backup for database from DATABASE_URL or config/database.yml for the current RAILS_ENV"
+  # task restore: [:connection] do
+  # end
 
   desc "Rolls back the last migration"
-  task rollback: [:load] do
-  end
+  task rollback: [:"migrate:down"]
 
   # namespace :schema do
   #   namespace :cache do
@@ -164,7 +196,6 @@ db_namespace = namespace ns do
   # task seed: [] do
   # end
 
-  # desc "Runs the #{ns}:create, #{ns}:migrate, #{ns}:seed tasks"
-  # task setup: [] do
-  # end
+  desc "Runs the #{ns}:create, #{ns}:migrate, #{ns}:seed tasks"
+  task setup: [:"#{ns}:create", :"#{ns}:migrate", :"#{ns}:seed"]
 end
