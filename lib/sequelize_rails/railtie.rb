@@ -19,6 +19,10 @@ module SequelizeRails
       ::Sequel::Model.send :extend, ::SequelizeRails::TranslationSupport
     end
 
+    initializer "sequel.pretty_print" do
+      ::Sequel::Model.plugin :pretty_print
+    end
+
     initializer "sequel.configuration" do
       SequelizeRails.configurations = ActiveRecord::DatabaseConfigurations.new Rails.application.config.database_configuration
     end

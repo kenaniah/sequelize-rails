@@ -4,6 +4,9 @@ require "sequelize_rails/version"
 require "sequelize_rails/railtie"
 require "sequelize_rails/translation_support"
 
+# Plugins
+require "sequel/plugins/pretty_print"
+
 # Generators
 require "rails/generators"
 require "sequelize_rails/generators/migration/migration_generator"
