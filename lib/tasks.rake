@@ -122,7 +122,6 @@ db_namespace = namespace ns do
   end
 
   namespace :migrate do
-
     # desc "Runs the \"down\" method for the last applied migration"
     task down: [:connection] do
       target = (migrator.applied_migrations[-2] || "0_").split("_", 2).first.to_i
@@ -154,12 +153,10 @@ db_namespace = namespace ns do
 
   desc "Runs #{ns}:setup if the database does not exist or #{ns}:migrate if it does"
   task prepare: [] do
-    begin
-      Rake::Task[:"#{ns}:connection"].invoke
-      Rake::Task[:"#{ns}:migrate"].invoke
-    rescue Sequel::DatabaseConnectionError
-      Rake::Task[:"#{ns}:setup"].invoke
-    end
+    Rake::Task[:"#{ns}:connection"].invoke
+    Rake::Task[:"#{ns}:migrate"].invoke
+  rescue Sequel::DatabaseConnectionError
+    Rake::Task[:"#{ns}:setup"].invoke
   end
 
   desc "Runs #{ns}:drop, #{ns}:setup"

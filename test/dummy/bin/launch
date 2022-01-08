@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+# Launches the development environment for this project.
+foreman start -f dev/Procfile --root ${0:a:h}/..

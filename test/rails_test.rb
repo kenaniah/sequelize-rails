@@ -11,4 +11,12 @@ class RailsTest < Minitest::Test
     assert_kind_of Dummy::Application, Rails.application
     assert_kind_of Rails::Application, Dummy::Application.new
   end
+
+  def test_loads_db_console_properly
+    require "open3"
+    output, process = Open3.capture2e "rails db", chdir: Rails.application.root
+    assert_equal "", output
+    assert process.success?
+    assert_equal 0, process.exitstatus
+  end
 end
