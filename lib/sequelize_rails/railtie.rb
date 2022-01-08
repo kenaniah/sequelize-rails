@@ -1,9 +1,13 @@
 require "sequel"
 require "rails"
 
+# Database configuration
+require "active_record/connection_handling"
+require "active_record/database_configurations"
+
 module SequelizeRails
   class Railtie < Rails::Railtie
-    config.app_generators.orm :sequel, migration: :sequel_migration
+    config.app_generators.orm :sequelize_rails, migration: :sequel_migration
 
     initializer "sequel.plugins" do
       ::Sequel::Model.plugin :active_model
@@ -15,8 +19,23 @@ module SequelizeRails
       ::Sequel::Model.send :extend, ::SequelizeRails::TranslationSupport
     end
 
+    initializer "sequel.configuration" do
+      SequelizeRails.configurations = ActiveRecord::DatabaseConfigurations.new Rails.application.config.database_configuration
+    end
+
     rake_tasks do
       load File.expand_path("../tasks.rake", __dir__)
     end
   end
+end
+
+# Monkey patch to allow Rails DB Console to load properly by loading active_record first
+if defined? Rails::DBConsole
+  module DBConsoleMonkeyPatch
+    def initialize options = {}
+      require "active_record"
+      super
+    end
+  end
+  Rails::DBConsole.prepend DBConsoleMonkeyPatch
 end
