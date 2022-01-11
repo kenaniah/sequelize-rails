@@ -1,3 +1,5 @@
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails"
+gem "sqlite3"
+gem "pg"
 gem "sequelize-rails", path: "../../"

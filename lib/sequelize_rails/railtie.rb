@@ -27,6 +27,10 @@ module SequelizeRails
       SequelizeRails.configurations = ActiveRecord::DatabaseConfigurations.new Rails.application.config.database_configuration
     end
 
+    initializer "sequel.connection" do
+      SequelizeRails.connect_to :primary unless ARGV.any? { |c| c.starts_with? "db:" }
+    end
+
     rake_tasks do
       load File.expand_path("../tasks.rake", __dir__)
     end

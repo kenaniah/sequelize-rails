@@ -1,3 +1,6 @@
+gem "sqlite3"
+gem "pg"
+
 appraise "rails-6" do
   gem "activerecord", "~> 6"
   gem "rails", "~> 6"

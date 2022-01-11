@@ -22,6 +22,8 @@ module SequelizeRails
     config[:adapter] = "sqlite" if config[:adapter] == "sqlite3"
     config[:max_connections] ||= config.delete(:pool) if config[:pool]
     config[:pool_timeout] ||= config.delete(:timeout) / 1000 if config[:timeout]
-    Sequel.connect config, opts
+    Dir.chdir Rails.root do
+      Sequel.connect config, opts
+    end
   end
 end

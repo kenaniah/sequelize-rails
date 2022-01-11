@@ -19,8 +19,11 @@ db_namespace = namespace ns do
   #   ActiveRecord::InternalMetadata[:environment] = ActiveRecord::Base.connection.migration_context.current_environment
   # end
 
+  # Changed: this task now only checks the loaded environment
   task check_protected_environments: :load_config do
-    ActiveRecord::Tasks::DatabaseTasks.check_protected_environments!
+    # Disconnect any potentially-existing Sequel database connections
+    Sequel::DATABASES.each(&:disconnect)
+    raise "Error: the #{Rails.env} environment is a protected environment." unless Rails.env.test? || Rails.env.development?
   end
 
   task load_config: :environment do
@@ -112,7 +115,7 @@ db_namespace = namespace ns do
     SequelizeRails.connect_to :primary
   end
 
-  # desc "Backs up the databse from DATABASE_URL or config/database.yml for the current RAILS_ENV"
+  # desc "Backs up the database from DATABASE_URL or config/database.yml for the current RAILS_ENV"
   # task dump: [] do
   # end
 

@@ -87,6 +87,7 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-arm64-darwin)
       racc (~> 1.4)
+    pg (1.2.3)
     racc (1.6.0)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -119,6 +120,7 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     sequel (5.51.0)
+    sqlite3 (1.4.2)
     thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -131,8 +133,10 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  pg
   rails
   sequelize-rails!
+  sqlite3
 
 BUNDLED WITH
    2.3.0
