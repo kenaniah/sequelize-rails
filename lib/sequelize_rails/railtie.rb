@@ -5,12 +5,23 @@ require "rails"
 require "active_record/connection_handling"
 require "active_record/database_configurations"
 
+# Railties
+require "action_controller/railtie"
+require "sequelize_rails/railties/log_subscriber"
+require "sequelize_rails/railties/controller_runtime"
+
 module SequelizeRails
   class Railtie < Rails::Railtie
+    ::SequelizeRails::Railties::LogSubscriber.attach_to :sequel
     config.app_generators.orm :sequelize_rails, migration: :sequel_migration
+    config.sequel = ActiveSupport::OrderedOptions.new
 
     initializer "sequel.plugins" do
       ::Sequel::Model.plugin :active_model
+    end
+
+    initializer 'sequel.logger' do |app|
+      app.config.sequel.logger ||= ::Rails.logger
     end
 
     # https://api.rubyonrails.org/classes/ActiveModel/Translation.html
@@ -31,19 +42,14 @@ module SequelizeRails
       SequelizeRails.connect_to :primary unless ARGV.any? { |c| c.starts_with? "db:" }
     end
 
+    # Expose database runtime to controller for logging.
+    initializer 'sequel.log_runtime' do |_app|
+      require 'sequelize_rails/railties/controller_runtime'
+      ActionController::Base.send :include, SequelizeRails::Railties::ControllerRuntime
+    end
+
     rake_tasks do
       load File.expand_path("../tasks.rake", __dir__)
     end
   end
-end
-
-# Monkey patch to allow Rails DB Console to load properly by loading active_record first
-if defined? Rails::DBConsole
-  module DBConsoleMonkeyPatch
-    def initialize options = {}
-      require "active_record"
-      super
-    end
-  end
-  Rails::DBConsole.prepend DBConsoleMonkeyPatch
 end

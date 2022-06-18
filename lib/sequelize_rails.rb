@@ -13,6 +13,9 @@ require "sequelize_rails/generators/migration/migration_generator"
 require "sequelize_rails/generators/model/model_generator"
 require "sequelize_rails/generators/application_record/application_record_generator"
 
+# Dependencies
+require "active_record"
+
 module SequelizeRails
   mattr_accessor :configurations
 
