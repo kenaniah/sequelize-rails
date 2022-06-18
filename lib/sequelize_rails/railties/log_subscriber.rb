@@ -6,19 +6,19 @@ module SequelizeRails
       class_attribute :backtrace_cleaner, default: ActiveSupport::BacktraceCleaner.new
 
       def self.runtime=(value)
-        Thread.current['sequel_sql_runtime'] = value
+        Thread.current["sequel_sql_runtime"] = value
       end
 
       def self.runtime
-        Thread.current['sequel_sql_runtime'] ||= 0
+        Thread.current["sequel_sql_runtime"] ||= 0
       end
 
       def self.count=(value)
-        Thread.current['sequel_sql_count'] = value
+        Thread.current["sequel_sql_count"] = value
       end
 
       def self.count
-        Thread.current['sequel_sql_count'] ||= 0
+        Thread.current["sequel_sql_count"] ||= 0
       end
 
       def self.reset_runtime
@@ -42,8 +42,8 @@ module SequelizeRails
 
         return if IGNORE_PAYLOAD_NAMES.include?(payload[:name])
 
-        name = format('%s (%.1fms)', payload[:name], event.duration)
-        sql  = payload[:sql].squeeze(' ')
+        name = format("%s (%.1fms)", payload[:name], event.duration)
+        sql = payload[:sql].squeeze(" ")
         binds = nil
 
         if payload[:binds]&.any?
@@ -55,8 +55,6 @@ module SequelizeRails
               attr.name
             elsif attr.respond_to?(:[]) && attr[i].respond_to?(:name)
               attr[i].name
-            else
-              nil
             end
 
             filtered_params = filter(attribute_name, casted_params[i])
@@ -68,12 +66,13 @@ module SequelizeRails
         end
 
         name = colorize_payload_name(name, payload[:name])
-        sql  = color(sql, sql_color(sql), true) if colorize_logging
+        sql = color(sql, sql_color(sql), true) if colorize_logging
 
         debug "  #{name}  #{sql}#{binds}"
       end
 
-    private
+      private
+
       def type_casted_binds(casted_binds)
         casted_binds.respond_to?(:call) ? casted_binds.call : casted_binds
       end

@@ -1,4 +1,4 @@
-require 'active_support/core_ext/module/attr_internal'
+require "active_support/core_ext/module/attr_internal"
 
 module SequelizeRails
   module Railties
@@ -36,8 +36,8 @@ module SequelizeRails
       module ClassMethods
         def log_process_action(payload)
           messages = super
-          messages << format('Database: %.1fms', payload[:db_runtime].to_f) if payload[:db_runtime]
-          messages << format('Queries: %d', payload[:db_query_count].to_f) if payload[:db_query_count]
+          messages << format("Database: %.1fms", payload[:db_runtime].to_f) if payload[:db_runtime]
+          messages << format("Queries: %d", payload[:db_query_count].to_f) if payload[:db_query_count]
           messages
         end
       end

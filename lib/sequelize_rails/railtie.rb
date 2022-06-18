@@ -26,7 +26,7 @@ module SequelizeRails
       ::Sequel::Model.plugin :active_model
     end
 
-    initializer 'sequel.logger' do |app|
+    initializer "sequel.logger" do |app|
       app.config.sequel.logger ||= ::Rails.logger
       app.config.sequel.verbose_query_logs = ::Rails.env.development? if app.config.sequel.verbose_query_logs.nil?
     end
@@ -50,8 +50,8 @@ module SequelizeRails
     end
 
     # Expose database runtime to controller for logging.
-    initializer 'sequel.log_runtime' do |_app|
-      require 'sequelize_rails/railties/controller_runtime'
+    initializer "sequel.log_runtime" do |_app|
+      require "sequelize_rails/railties/controller_runtime"
       ActionController::Base.send :include, SequelizeRails::Railties::ControllerRuntime
     end
 
