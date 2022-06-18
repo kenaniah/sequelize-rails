@@ -10,7 +10,7 @@ require "action_controller/railtie"
 require "sequelize_rails/railties/log_subscriber"
 require "sequelize_rails/railties/controller_runtime"
 
-# Load instrumentation before any database connections are established
+# Load instrumentation (before any database connections are established)
 Sequel.extension :sequel_instrumentation
 
 # Monkey patches
@@ -18,7 +18,11 @@ require "sequelize_rails/db_console"
 
 module SequelizeRails
   class Railtie < Rails::Railtie
+    # Log subscriber
     ::SequelizeRails::Railties::LogSubscriber.attach_to :sequel
+    ::SequelizeRails::Railties::LogSubscriber.backtrace_cleaner.add_filter { |line| line.gsub(Rails.root.to_s + File::SEPARATOR, "") }
+
+    # Config initialization
     config.app_generators.orm :sequelize_rails, migration: :sequel_migration
     config.sequel = ActiveSupport::OrderedOptions.new
 
