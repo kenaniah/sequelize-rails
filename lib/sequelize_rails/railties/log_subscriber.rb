@@ -38,10 +38,10 @@ module SequelizeRails
 
         name = format('%s (%.1fms)', payload[:name], event.duration)
         sql  = payload[:sql].squeeze(' ')
-        binds = nil
+        args = nil
 
-        unless (payload[:binds] || []).empty?
-          binds = '  ' + payload[:binds].map do |col, v|
+        unless (payload[:args] || []).empty?
+          args = '  ' + payload[:args].map do |col, v|
             [col.name, v]
           end.inspect
         end
@@ -53,7 +53,7 @@ module SequelizeRails
           name = color(name, :magenta, true)
         end
 
-        debug "  #{name}  #{sql}#{binds}"
+        debug "  #{name}  #{sql}#{args}"
       end
 
       def odd?

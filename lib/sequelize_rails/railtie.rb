@@ -10,6 +10,9 @@ require "action_controller/railtie"
 require "sequelize_rails/railties/log_subscriber"
 require "sequelize_rails/railties/controller_runtime"
 
+# Load instrumentation before any database connections are established
+Sequel.extension :sequel_instrumentation
+
 module SequelizeRails
   class Railtie < Rails::Railtie
     ::SequelizeRails::Railties::LogSubscriber.attach_to :sequel
