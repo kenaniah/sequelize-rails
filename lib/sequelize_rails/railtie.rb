@@ -11,7 +11,7 @@ require "sequelize_rails/railties/log_subscriber"
 require "sequelize_rails/railties/controller_runtime"
 
 # Load instrumentation before any database connections are established
-#Sequel.extension :sequel_instrumentation
+Sequel.extension :sequel_instrumentation
 
 # Monkey patches
 require "sequelize_rails/db_console"
@@ -28,6 +28,7 @@ module SequelizeRails
 
     initializer 'sequel.logger' do |app|
       app.config.sequel.logger ||= ::Rails.logger
+      app.config.sequel.verbose_query_logs = ::Rails.env.development? if app.config.sequel.verbose_query_logs.nil?
     end
 
     # https://api.rubyonrails.org/classes/ActiveModel/Translation.html

@@ -129,7 +129,7 @@ module SequelizeRails
       def debug(progname = nil, &block)
         return unless super
 
-        if ActiveRecord.verbose_query_logs
+        if Rails.application.config.sequel.verbose_query_logs
           log_query_source
         end
       end
@@ -138,7 +138,7 @@ module SequelizeRails
         source = extract_query_source_location(caller)
 
         if source
-          logger.debug("  ↳ #{source}")
+          logger.debug("        ↳ #{source}")
         end
       end
 
