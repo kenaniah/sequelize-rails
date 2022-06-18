@@ -2,7 +2,7 @@ module Sequel
   module Extensions
     module SequelInstrumentation
       def log_connection_yield(sql, conn, args=nil)
-        ActiveSupport::Notifications.instrument "sql.sequel", sql: sql, conn: conn, args: args do
+        ActiveSupport::Notifications.instrument "sql.sequel", sql: sql, conn: conn, binds: args do
           super
         end
       end
