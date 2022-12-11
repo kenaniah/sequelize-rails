@@ -22,8 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.6', '2.7', '3.0']
-
+        gemfile: [rails_6, rails_7]
+        ruby-version: ['2.6', '2.7', '3.0', '3.1']
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
     steps:
     - uses: actions/checkout@v3
     - name: Set up Ruby
@@ -31,7 +33,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Appraisal
-      run: bundle exec appraisal
     - name: Run tests
-      run: appraisal rake test
+      run: bundle exec rake
