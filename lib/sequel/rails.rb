@@ -19,7 +19,7 @@ module Sequel
 
     # Opens a database connection based on the given configuration name
     def self.connect_to config_name, opts = {}
-      config = self.configurations.resolve(config_name).configuration_hash.dup
+      config = configurations.resolve(config_name).configuration_hash.dup
       config[:adapter] = "sqlite" if config[:adapter] == "sqlite3"
       config[:max_connections] ||= config.delete(:pool) if config[:pool]
       config[:pool_timeout] ||= config.delete(:timeout) / 1000 if config[:timeout]
