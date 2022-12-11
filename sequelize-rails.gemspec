@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/sequelize_rails/version"
+require_relative "lib/sequel/rails/version"
 
 Gem::Specification.new do |spec|
   spec.name = "sequelize-rails"
-  spec.version = ::SequelizeRails::VERSION
+  spec.version = ::Sequel::Rails::VERSION
   spec.authors = ["Kenaniah Cerny"]
   spec.email = ["kenaniah@gmail.com"]
 

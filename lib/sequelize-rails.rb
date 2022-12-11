@@ -1,1 +1,1 @@
-require "sequelize_rails"
+require "sequel/rails"

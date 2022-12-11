@@ -3,7 +3,7 @@
 require "test_helper"
 
 # Launch the application
-Rails.application.initialize!
+::Rails.application.initialize!
 
 class ModelTest < Minitest::Test
   # Test active_model compatibility

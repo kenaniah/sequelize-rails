@@ -23,14 +23,14 @@ db_namespace = namespace ns do
   task check_protected_environments: :load_config do
     # Disconnect any potentially-existing Sequel database connections
     Sequel::DATABASES.each(&:disconnect)
-    raise "Error: the #{Rails.env} environment is a protected environment." unless Rails.env.test? || Rails.env.development?
+    raise "Error: the #{::Rails.env} environment is a protected environment." unless ::Rails.env.test? || ::Rails.env.development?
   end
 
   task load_config: :environment do
     if ActiveRecord::Base.configurations.empty?
       # Changed: the active_record railtie may not be loaded, so we need to load the database configuration directly
       # ActiveRecord::Base.configurations = ActiveRecord::Tasks::DatabaseTasks.database_configuration
-      ActiveRecord::Base.configurations = Rails.application.config.database_configuration
+      ActiveRecord::Base.configurations = ::Rails.application.config.database_configuration
       # This line was also added
       ActiveRecord::Base.establish_connection
     end
@@ -46,7 +46,7 @@ db_namespace = namespace ns do
     ActiveRecord::Tasks::DatabaseTasks.for_each(databases) do |name|
       desc "Create #{name} database for current environment"
       task name => :load_config do
-        db_config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: name)
+        db_config = ActiveRecord::Base.configurations.configs_for(env_name: ::Rails.env, name: name)
         ActiveRecord::Tasks::DatabaseTasks.create(db_config)
       end
     end
@@ -65,7 +65,7 @@ db_namespace = namespace ns do
     ActiveRecord::Tasks::DatabaseTasks.for_each(databases) do |name|
       desc "Drop #{name} database for current environment"
       task name => [:load_config, :check_protected_environments] do
-        db_config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: name)
+        db_config = ActiveRecord::Base.configurations.configs_for(env_name: ::Rails.env, name: name)
         ActiveRecord::Tasks::DatabaseTasks.drop(db_config)
       end
     end
@@ -112,14 +112,14 @@ db_namespace = namespace ns do
   task connection: [:environment] do
     require "sequel/core"
     Sequel.extension :migration
-    SequelizeRails.connect_to :primary
+    Sequel::Rails.connect_to :primary
   end
 
   # desc "Backs up the database from DATABASE_URL or config/database.yml for the current RAILS_ENV"
   # task dump: [] do
   # end
 
-  desc "Migrate the database"
+  desc "Runs database migrations"
   task migrate: [:connection] do
     migrator.run
   end

@@ -1,6 +1,6 @@
 # sequelize-rails
 
-This gem provides support for using [Sequel](https://github.com/jeremyevans/sequel) as an ORM for Rails applications by providing features that are similar to ActiveRecord's integration with Rails. It is an alternative to [sequel-rails](https://github.com/TalentBox/sequel-rails).
+This gem provides support for using [Sequel](https://sequel.jeremyevans.net/) as an ORM for Rails applications by providing features that are similar to ActiveRecord's integration with Rails. It is an alternative to [sequel-rails](https://github.com/TalentBox/sequel-rails).
 
 ## Using sequelize-rails
 
@@ -18,11 +18,12 @@ If you are looking to replace ActiveRecord entirely, you may need to either gene
 
 ## Features provided by `sequelize-rails`
 
-The following features are supported or are planned to be supported:
+**Database Management**
 
- - [x] [Database connectivity](#database-connectivity) via `config/database.yml`
- - [x] [Database console](#console-commands) via `rails db`
- - [x] [Database rake tasks](#database-rake-tasks) via `rails db:*`
+ - [x] [Connectivity](#database-connectivity) via `config/database.yml`
+ - [x] [Console](#database-console) via `rails db`
+ - [x] [Migrations](https://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html) via `Sequel::Migration`
+ - [x] [Rake tasks](#database-rake-tasks) via `rails db:*`
 
 ### Database Connectivity
 
@@ -64,11 +65,11 @@ my_replica:
 
 ```
 
-Additional connections can be retrieved via `SequelizeRails.connect_to`, such as within the example below:
+Additional connections can be retrieved via `Sequel::Rails.connect_to`, such as within the example below:
 
 
 ```ruby
-replica_connection = SequelizeRails.connect_to :my_replica
+replica_connection = Sequel::Rails.connect_to :my_replica
 ```
 
 ### Database Console
@@ -93,7 +94,7 @@ This gem provides a set of rake tasks that are similar to the ActiveRecord tasks
 | --- | --- |
 | `rails db:create` | Creates the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:create:all` to create all databases in the config). |
 | `rails db:drop` | Drops the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:drop:all` to drop all databases in the config). |
-| `rails db:migrate` | Migrate the database |
+| `rails db:migrate` | Runs database migrations |
 | `rails db:migrate:redo` | Rolls back the last migration and re-runs it |
 | `rails db:migrate:status` | Displays the status of the database migrations |
 | `rails db:prepare` | Runs `db:setup` if the database does not exist or `db:migrate` if it does |
@@ -120,7 +121,6 @@ The gem is available as open source under the terms of the [MIT License](https:/
  - [ ] Support `rails console --sandbox` (auto rollback all transactions)
  - [ ] Support logging
  - [ ] Support db rake tasks
- - [ ] Support multiple databases
  - [ ] Support reloading (disconnect all connections)
  - [ ] Support ActiveRecord plugins / conventions (shims)
  - [ ] Support PostgreSQL custom format for dump & restore
