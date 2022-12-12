@@ -121,9 +121,6 @@ This gem provides a set of rake tasks that are similar to the ActiveRecord tasks
 | `rails db:setup` | Runs the `db:create`, `db:migrate`, `db:seed` tasks |
 
 ## ✅ - Minitest Helpers
-
-This gem provides a set of helpers that can be used to facilitate testing your database queries. The following minitest helpers are defined:
-
 ### `assert_num_queries`
 
 This helper can be used to assert that a specific number of database queries are executed within the given block of code.
