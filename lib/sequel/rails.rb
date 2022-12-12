@@ -13,6 +13,13 @@ require "sequel/rails/generators/migration/migration_generator"
 require "sequel/rails/generators/model/model_generator"
 require "sequel/rails/generators/application_record/application_record_generator"
 
+# Minitest support
+begin
+  gem "minitest"
+  require "sequel/rails/minitest"
+rescue Gem::LoadError
+end
+
 module Sequel
   module Rails
     mattr_accessor :configurations

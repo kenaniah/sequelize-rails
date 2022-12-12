@@ -30,9 +30,12 @@ If you are looking to replace ActiveRecord entirely, you may need to either gene
  - [ ] [Migration Generators](#---migration-generators) via `rails generate migration` (not supported yet)
  - [x] [Rake tasks](#---database-rake-tasks) via `rails db:*`
 
+**Test Suite**
+ - [x] [Minitest Helpers](#---minitest-helpers)
+
 ## ✅ - Database Connectivity
 
-This gem will automaticall use your application's `config/database.yml` file to configure the available database connection(s).
+This gem will automatically use your application's `config/database.yml` file to configure the available database connection(s).
 
 ### Primary Connection
 
@@ -116,6 +119,53 @@ This gem provides a set of rake tasks that are similar to the ActiveRecord tasks
 | `rails db:reset` | Runs `db:drop`, `db:setup` |
 | `rails db:rollback` | Rolls back the last migration |
 | `rails db:setup` | Runs the `db:create`, `db:migrate`, `db:seed` tasks |
+
+## ✅ - Minitest Helpers
+
+This gem provides a set of helpers that can be used to facilitate testing your database queries. The following minitest helpers are defined:
+
+### `assert_num_queries`
+
+This helper can be used to assert that a specific number of database queries are executed within the given block of code. Examples:
+
+```ruby
+# asserts that exactly 2 queries are executed
+assert_num_queries(2) do
+  u = User[id: 1234]
+  u.update(name: "Random User")
+end
+
+# asserts that 0 queries are executed
+assert_num_queries(0) do
+  some_hopefully_cached_method
+end
+
+# asserts that up to 2 queries are executed
+assert_num_queries(1..2) do
+  u = User.find_or_create(name: "Random User")
+end
+
+# asserts that at least 3 queries are executed
+assert_num_queries(3..) do
+  stuff_here
+end
+
+# asserts that no more than 2 queries are executed
+assert_num_queries(..2) do
+  other_stuff_here
+end
+```
+
+### `assert_no_queries`
+
+This helper can be used to assert that no database queries are executed within the given block of code. Examples:
+
+```ruby
+# asserts that no queries are executed
+assert_no_queries do
+  some_hopefully_cached_method
+end
+```
 
 # Contributing
 
