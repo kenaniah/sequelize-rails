@@ -1,5 +1,9 @@
 # sequelize-rails
 
+[![Gem Version](https://badge.fury.io/rb/sequelize-rails.svg)][gem]
+![Build Status](https://github.com/kenaniah/sequelize-rails/actions/workflows/ci.yml/badge.svg)
+[![Code Climate](https://codeclimate.com/github/kenaniah/sequelize-rails.svg)][codeclimate]
+
 This gem provides support for using [Sequel](https://sequel.jeremyevans.net/) as an ORM for Rails applications by providing features that are similar to ActiveRecord's integration with Rails. It is an alternative to [sequel-rails](https://github.com/TalentBox/sequel-rails).
 
 ## Using sequelize-rails
@@ -20,14 +24,15 @@ If you are looking to replace ActiveRecord entirely, you may need to either gene
 
 **Database Management**
 
- - [x] [Connectivity](#database-connectivity) via `config/database.yml`
- - [x] [Console](#database-console) via `rails db`
- - [x] [Migrations](https://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html) via `Sequel::Migration`
- - [x] [Rake tasks](#database-rake-tasks) via `rails db:*`
+ - [x] [Connectivity](#-database-connectivity) via `config/database.yml`
+ - [x] [Console](#-database-console) via `rails db`
+ - [x] [Migrations](#-database-migrations) via `Sequel::Migration`
+ - [ ] Migration Generators
+ - [x] [Rake tasks](#-database-rake-tasks) via `rails db:*`
 
-## Database Connectivity
+## ✅ - Database Connectivity
 
-This gem will automatically use your application's `config/database.yml` file to configure the available database connection(s).
+This gem will automaticall use your application's `config/database.yml` file to configure the available database connection(s).
 
 ### Primary Connection
 
@@ -72,7 +77,7 @@ Additional connections can be retrieved via `Sequel::Rails.connect_to`, such as 
 replica_connection = Sequel::Rails.connect_to :my_replica
 ```
 
-## Database Console
+## ✅ - Database Console
 
 You can connect directly to your database via the `rails db` command. This command is similar to the `rails console` command, but instead of loading your application, it will connect directly to the database.
 
@@ -86,7 +91,17 @@ $ rails db -e test
 
 Please note that only the `-e` flag is supported at this time. Other flags such as `--database` are not supported.
 
-## Database Rake Tasks
+## ✅ - Database Migrations
+
+This gem provides support for using Sequel's migration system. Migrations are stored in the `db/migrate` directory and can be executed via the `rails db:migrate` command.
+
+More information about Sequel's migration system can be found in the [Sequel documentation](https://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html).
+
+## 🚧 - Migration Generators
+
+Rails supports the generation of migrations via the `rails generate migration` command. This gem does not currently support this feature.
+
+## ✅ - Database Rake Tasks
 
 This gem provides a set of rake tasks that are similar to the ActiveRecord tasks. These tasks can be used to create, drop, migrate, and seed your database.
 
@@ -102,12 +117,6 @@ This gem provides a set of rake tasks that are similar to the ActiveRecord tasks
 | `rails db:rollback` | Rolls back the last migration |
 | `rails db:setup` | Runs the `db:create`, `db:migrate`, `db:seed` tasks |
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/kenaniah/sequelize-rails.
@@ -118,6 +127,7 @@ This repository contains a handful of commands that can be used to facilitate th
 | `bin/setup` | Installs the gem's development dependencies |
 | `bin/test` | Runs the test suite for each supported Rails version |
 | `bin/console` | Starts an interactive console within the gem's test Rails app (located in `test/dummy/`) |
+| `bundle exec rake release` | Creates a new release of the gem (version number should be bumped first) |
 
 # License
 
