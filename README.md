@@ -126,7 +126,9 @@ This gem provides a set of helpers that can be used to facilitate testing your d
 
 ### `assert_num_queries`
 
-This helper can be used to assert that a specific number of database queries are executed within the given block of code. Examples:
+This helper can be used to assert that a specific number of database queries are executed within the given block of code.
+
+Example:
 
 ```ruby
 # asserts that exactly 2 queries are executed
@@ -158,7 +160,9 @@ end
 
 ### `assert_no_queries`
 
-This helper can be used to assert that no database queries are executed within the given block of code. Examples:
+This helper can be used to assert that no database queries are executed within the given block of code.
+
+Example:
 
 ```ruby
 # asserts that no queries are executed
