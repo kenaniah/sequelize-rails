@@ -1,8 +1,8 @@
 # sequelize-rails
 
-[![Gem Version](https://badge.fury.io/rb/sequelize-rails.svg)][gem]
+![Gem Version](https://badge.fury.io/rb/sequelize-rails.svg)
 ![Build Status](https://github.com/kenaniah/sequelize-rails/actions/workflows/ci.yml/badge.svg)
-[![Code Climate](https://codeclimate.com/github/kenaniah/sequelize-rails.svg)][codeclimate]
+![Code Climate](https://codeclimate.com/github/kenaniah/sequelize-rails.svg)
 
 This gem provides support for using [Sequel](https://sequel.jeremyevans.net/) as an ORM for Rails applications by providing features that are similar to ActiveRecord's integration with Rails. It is an alternative to [sequel-rails](https://github.com/TalentBox/sequel-rails).
 
