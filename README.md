@@ -25,11 +25,11 @@ If you are looking to replace ActiveRecord entirely, you may need to either gene
  - [x] [Migrations](https://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html) via `Sequel::Migration`
  - [x] [Rake tasks](#database-rake-tasks) via `rails db:*`
 
-### Database Connectivity
+## Database Connectivity
 
 This gem will automatically use your application's `config/database.yml` file to configure the available database connection(s).
 
-#### Primary Connection
+### Primary Connection
 
 A connection to the "primary" database is automatically established when the application is loaded. This connection will by used by default for all model classes that do not specify a different connection.
 
@@ -46,7 +46,7 @@ A common convention within applications that use Sequel is to store the primary 
 DB = Sequel::DATABASES.first unless defined?(DB)
 ```
 
-#### Additional Connections
+### Additional Connections
 
 Additional connections can be configured in your `config/database.yml` file by adding additional entries to the `databases` key. For example:
 
@@ -72,7 +72,7 @@ Additional connections can be retrieved via `Sequel::Rails.connect_to`, such as 
 replica_connection = Sequel::Rails.connect_to :my_replica
 ```
 
-### Database Console
+## Database Console
 
 You can connect directly to your database via the `rails db` command. This command is similar to the `rails console` command, but instead of loading your application, it will connect directly to the database.
 
@@ -86,7 +86,7 @@ $ rails db -e test
 
 Please note that only the `-e` flag is supported at this time. Other flags such as `--database` are not supported.
 
-### Database Rake Tasks
+## Database Rake Tasks
 
 This gem provides a set of rake tasks that are similar to the ActiveRecord tasks. These tasks can be used to create, drop, migrate, and seed your database.
 
@@ -108,15 +108,22 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-## Contributing
+# Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/kenaniah/sequelize-rails.
 
-## License
+This repository contains a handful of commands that can be used to facilitate this gem's development. These are:
+
+| Command | Description |
+| `bin/setup` | Installs the gem's development dependencies |
+| `bin/test` | Runs the test suite for each supported Rails version |
+| `bin/console` | Starts an interactive console within the gem's test Rails app (located in `test/dummy/`) |
+
+# License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-## Roadmap
+# Roadmap
 
  - [ ] Support `rails console --sandbox` (auto rollback all transactions)
  - [ ] Support logging
