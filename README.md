@@ -24,11 +24,11 @@ If you are looking to replace ActiveRecord entirely, you may need to either gene
 
 **Database Management**
 
- - [x] [Connectivity](#-database-connectivity) via `config/database.yml`
- - [x] [Console](#-database-console) via `rails db`
- - [x] [Migrations](#-database-migrations) via `Sequel::Migration`
- - [ ] Migration Generators
- - [x] [Rake tasks](#-database-rake-tasks) via `rails db:*`
+ - [x] [Connectivity](#---database-connectivity) via `config/database.yml`
+ - [x] [Console](#---database-console) via `rails db`
+ - [x] [Migrations](#---database-migrations) via `Sequel::Migration`
+ - [ ] [Migration Generators](#---migration-generators) via `rails generate migration` (not supported yet)
+ - [x] [Rake tasks](#---database-rake-tasks) via `rails db:*`
 
 ## ✅ - Database Connectivity
 
@@ -99,7 +99,7 @@ More information about Sequel's migration system can be found in the [Sequel doc
 
 ## 🚧 - Migration Generators
 
-Rails supports the generation of migrations via the `rails generate migration` command. This gem does not currently support this feature.
+Rails supports the generation of migrations via the `rails generate migration` command. This gem does not currently support this feature, but pull requests are welcome.
 
 ## ✅ - Database Rake Tasks
 
@@ -124,6 +124,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/kenani
 This repository contains a handful of commands that can be used to facilitate this gem's development. These are:
 
 | Command | Description |
+| --- | --- |
 | `bin/setup` | Installs the gem's development dependencies |
 | `bin/test` | Runs the test suite for each supported Rails version |
 | `bin/console` | Starts an interactive console within the gem's test Rails app (located in `test/dummy/`) |
