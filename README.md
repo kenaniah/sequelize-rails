@@ -139,7 +139,7 @@ assert_num_queries(0) do
   some_hopefully_cached_method
 end
 
-# asserts that up to 2 queries are executed
+# asserts that up 1 or 2 queries are executed
 assert_num_queries(1..2) do
   u = User.find_or_create(name: "Random User")
 end
