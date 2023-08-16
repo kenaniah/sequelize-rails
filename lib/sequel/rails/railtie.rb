@@ -51,7 +51,7 @@ module Sequel
       end
 
       initializer "sequel.connection" do
-        in_rake = Rails.const_defined?("Rake") && Rake.application.top_level_tasks.length > 0
+        in_rake = Rails.const_defined?(:Rake) && Rake.application.top_level_tasks.length > 0
         ::Sequel::Rails.connect_to :primary unless in_rake
       end
 

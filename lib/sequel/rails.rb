@@ -32,6 +32,9 @@ module Sequel
       config[:pool_timeout] ||= config.delete(:timeout) / 1000 if config[:timeout]
       Dir.chdir ::Rails.root do
         ::Sequel.connect config, opts
+      end.tap do |db|
+        callback = ::Rails.application.config.sequel.after_connect
+        callback.call(db) if callback.respond_to?(:call)
       end
     end
   end
