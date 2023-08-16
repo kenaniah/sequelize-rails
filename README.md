@@ -18,20 +18,26 @@ And then execute:
 
     $ bundle install
 
-If you are looking to replace ActiveRecord entirely, you may need to either generate your Rails app using `--skip-active-record` or manually remove references to ActiveRecord in your `Gemfile`,  `config/application.rb`, and `config/environments/*.rb` files.
+If you are looking to replace ActiveRecord entirely, you may need to either generate your Rails app using `--skip-active-record` or manually remove references to ActiveRecord in your `Gemfile`, `config/application.rb`, and `config/environments/*.rb` files.
 
 ## Features provided by `sequelize-rails`
 
 **Database Management**
 
- - [x] [Connectivity](#---database-connectivity) via `config/database.yml`
- - [x] [Console](#---database-console) via `rails db`
- - [x] [Migrations](#---database-migrations) via `Sequel::Migration`
- - [ ] [Migration Generators](#---migration-generators) via `rails generate migration` (not supported yet)
- - [x] [Rake tasks](#---database-rake-tasks) via `rails db:*`
+- [x] [Connectivity](#---database-connectivity) via `config/database.yml`
+- [x] [Console](#---database-console) via `rails db`
+- [x] [Migrations](#---database-migrations) via `Sequel::Migration`
+- [ ] [Migration Generators](#---migration-generators) via `rails generate migration` (not supported yet)
+- [x] [Rake tasks](#---database-rake-tasks) via `rails db:*`
 
 **Test Suite**
- - [x] [Minitest Helpers](#---minitest-helpers)
+
+- [x] [Minitest Helpers](#---minitest-helpers)
+
+**Rake Helpers**
+
+- [x] Does not connect to the primary database in Rake (tasks by default)
+- [x] Allows for explicit connection to the primary database by invoking `db:connection`
 
 ## ✅ - Database Connectivity
 
@@ -75,9 +81,35 @@ my_replica:
 
 Additional connections can be retrieved via `Sequel::Rails.connect_to`, such as within the example below:
 
-
 ```ruby
 replica_connection = Sequel::Rails.connect_to :my_replica
+```
+
+### Database Connections in Rake Tasks
+
+By default, this gem will not connect to the primary database when running Rake tasks. This is to prevent Rake tasks from accidentally depending on a database connection when one is not necessary. If you would like to connect to the primary database within a Rake task, you can do so by invoking the `db:connection` task, or by calling `Sequel::Rails.connect_to :primary` from within your task.
+
+```ruby
+# Rakefile
+
+# no database connections are initialized by default
+task :no_db_connection do
+  Sequel::DATABASES # => []
+  Sequel::DATABASES.length # => 0
+end
+
+# connects to the primary database explicitly
+task :my_task do
+  db = Sequel::Rails.connect_to :primary
+  Sequel::DATABASES # => [db]
+  Sequel::DATABASES.length # => 1
+end
+
+# connects to the primary database via the db:connection task
+task :my_other_task => "db:connection" do
+  Sequel::DATABASES # => [<primary db connection here>]
+  Sequel::DATABASES.length # => 1
+end
 ```
 
 ## ✅ - Database Console
@@ -108,19 +140,20 @@ Rails supports the generation of migrations via the `rails generate migration` c
 
 This gem provides a set of rake tasks that are similar to the ActiveRecord tasks. These tasks can be used to create, drop, migrate, and seed your database.
 
-| Task | Description |
-| --- | --- |
-| `rails db:create` | Creates the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:create:all` to create all databases in the config). |
-| `rails db:drop` | Drops the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:drop:all` to drop all databases in the config). |
-| `rails db:migrate` | Runs database migrations |
-| `rails db:migrate:redo` | Rolls back the last migration and re-runs it |
-| `rails db:migrate:status` | Displays the status of the database migrations |
-| `rails db:prepare` | Runs `db:setup` if the database does not exist or `db:migrate` if it does |
-| `rails db:reset` | Runs `db:drop`, `db:setup` |
-| `rails db:rollback` | Rolls back the last migration |
-| `rails db:setup` | Runs the `db:create`, `db:migrate`, `db:seed` tasks |
+| Task                      | Description                                                                                                                                                |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rails db:create`         | Creates the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:create:all` to create all databases in the config). |
+| `rails db:drop`           | Drops the database from `DATABASE_URL` or `config/database.yml` for the current `RAILS_ENV` (use `db:drop:all` to drop all databases in the config).       |
+| `rails db:migrate`        | Runs database migrations                                                                                                                                   |
+| `rails db:migrate:redo`   | Rolls back the last migration and re-runs it                                                                                                               |
+| `rails db:migrate:status` | Displays the status of the database migrations                                                                                                             |
+| `rails db:prepare`        | Runs `db:setup` if the database does not exist or `db:migrate` if it does                                                                                  |
+| `rails db:reset`          | Runs `db:drop`, `db:setup`                                                                                                                                 |
+| `rails db:rollback`       | Rolls back the last migration                                                                                                                              |
+| `rails db:setup`          | Runs the `db:create`, `db:migrate`, `db:seed` tasks                                                                                                        |
 
 ## ✅ - Minitest Helpers
+
 ### `assert_num_queries`
 
 This helper can be used to assert that a specific number of database queries are executed within the given block of code.
@@ -174,12 +207,12 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/kenani
 
 This repository contains a handful of commands that can be used to facilitate this gem's development. These are:
 
-| Command | Description |
-| --- | --- |
-| `bin/setup` | Installs the gem's development dependencies |
-| `bin/test` | Runs the test suite for each supported Rails version |
-| `bin/console` | Starts an interactive console within the gem's test Rails app (located in `test/dummy/`) |
-| `bundle exec rake release` | Creates a new release of the gem (version number should be bumped first) |
+| Command                    | Description                                                                              |
+| -------------------------- | ---------------------------------------------------------------------------------------- |
+| `bin/setup`                | Installs the gem's development dependencies                                              |
+| `bin/test`                 | Runs the test suite for each supported Rails version                                     |
+| `bin/console`              | Starts an interactive console within the gem's test Rails app (located in `test/dummy/`) |
+| `bundle exec rake release` | Creates a new release of the gem (version number should be bumped first)                 |
 
 # License
 
@@ -187,11 +220,11 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 # Roadmap
 
- - [ ] Support `rails console --sandbox` (auto rollback all transactions)
- - [ ] Support logging
- - [ ] Support db rake tasks
- - [ ] Support reloading (disconnect all connections)
- - [ ] Support ActiveRecord plugins / conventions (shims)
- - [ ] Support PostgreSQL custom format for dump & restore
- - [ ] Support generators (including orm)
- - [ ] Support migration generator (and parsed attributes)
+- [ ] Support `rails console --sandbox` (auto rollback all transactions)
+- [ ] Support logging
+- [ ] Support db rake tasks
+- [ ] Support reloading (disconnect all connections)
+- [ ] Support ActiveRecord plugins / conventions (shims)
+- [ ] Support PostgreSQL custom format for dump & restore
+- [ ] Support generators (including orm)
+- [ ] Support migration generator (and parsed attributes)

@@ -51,7 +51,8 @@ module Sequel
       end
 
       initializer "sequel.connection" do
-        ::Sequel::Rails.connect_to :primary unless ARGV.any? { |c| c.starts_with? "db:" }
+        in_rake = Rails.const_defined?("Rake") && Rake.application.top_level_tasks.length > 0
+        ::Sequel::Rails.connect_to :primary unless in_rake
       end
 
       # Expose database runtime to controller for logging.

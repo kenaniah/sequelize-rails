@@ -32,4 +32,16 @@ class RailsTest < Minitest::Test
     assert_equal "", output
     assert_equal 0, process.exitstatus
   end
+
+  def test_rake_tasks_do_not_connect_to_db_by_default
+    require "open3"
+    output, process = Open3.capture2e "rails testing:without_connection", chdir: ::Rails.application.root
+    assert_equal "0\n", output
+  end
+
+  def test_rake_tasks_connect_to_db_when_connection_requested
+    require "open3"
+    output, process = Open3.capture2e "rails testing:has_connection", chdir: ::Rails.application.root
+    assert_equal "1\n", output
+  end
 end
