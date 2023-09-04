@@ -125,13 +125,13 @@ db_namespace = namespace ns do
   end
 
   namespace :migrate do
-    # desc "Runs the \"down\" method for the last applied migration"
+    desc "Runs the \"down\" method for the last applied migration"
     task down: [:connection] do
       target = (migrator.applied_migrations[-2] || "0_").split("_", 2).first.to_i
       migrator(target: target).run
     end
 
-    # desc "Runs the \"up\" method for the next pending migration"
+    desc "Runs the \"up\" method for the next pending migration"
     task up: [:connection] do
       pending = migrator.migration_tuples.first
       if pending
@@ -172,30 +172,33 @@ db_namespace = namespace ns do
   desc "Rolls back the last migration"
   task rollback: [:"migrate:down"]
 
-  # namespace :schema do
-  #   namespace :cache do
-  #     desc "Clears the database schema and indicies caches"
-  #     task clear: [] do
-  #     end
+  namespace :schema do
+    #   namespace :cache do
+    #     desc "Clears the database schema and indicies caches"
+    #     task clear: [] do
+    #     end
 
-  #     desc "Creates the database schema and indicies caches"
-  #     task dump: [] do
-  #     end
-  #   end
+    #     desc "Creates the database schema and indicies caches"
+    #     task dump: [] do
+    #     end
+    #   end
 
-  #   desc "Creates a backup of just the database's schema"
-  #   task dump: [] do
-  #   end
+    desc "Creates a backup of the database's schema"
+    task dump: [] do
+      puts "Please implement the #{ns}:schema:dump task within your Rakefile"
+    end
 
-  #   desc "Restores the database's schema from backup"
-  #   task load: [] do
-  #   end
-  # end
+    desc "Restores the database's schema from backup"
+    task load: [] do
+      puts "Please implement the #{ns}:schema:load task within your Rakefile"
+    end
+  end
 
-  # desc "Loads the seed data from db/seeds.rb"
-  # task seed: [] do
-  # end
+  desc "Loads seed data by running db/seeds.rb"
+  task seed: [:connection] do
+    require Rails.root.join("db", "seeds.rb")
+  end
 
-  desc "Runs the #{ns}:create, #{ns}:migrate, #{ns}:seed tasks"
-  task setup: [:"#{ns}:create", :"#{ns}:migrate", :"#{ns}:seed"]
+  desc "Runs the #{ns}:create, #{ns}:schema:load, #{ns}:migrate, #{ns}:seed tasks"
+  task setup: [:"#{ns}:create", :"#{ns}:schema:load", :"#{ns}:migrate", :"#{ns}:seed"]
 end
