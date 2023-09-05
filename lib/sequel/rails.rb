@@ -7,12 +7,6 @@ require "sequel/rails/translation_support"
 # Plugins
 require "sequel/plugins/pretty_print"
 
-# Generators
-require "rails/generators"
-require "sequel/rails/generators/migration/migration_generator"
-require "sequel/rails/generators/model/model_generator"
-require "sequel/rails/generators/application_record/application_record_generator"
-
 # Minitest support
 begin
   gem "minitest"

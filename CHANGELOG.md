@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.6.0] - 2023-09-04
+
+- Adds migration generator
+
 ## [0.5.0] - 2023-09-04
 
 - Adds the `db:seed` rake task for running seed files

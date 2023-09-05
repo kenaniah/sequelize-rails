@@ -4,7 +4,7 @@ class ApplicationRecord < Sequel::Model
   dataset = nil
 end
 
-# Allows subclassed models to be initialzed with a customized dataset
+# Allows subclassed models to be initialized with a customized dataset
 def ApplicationRecord *args
   ApplicationRecord.Model *args
 end

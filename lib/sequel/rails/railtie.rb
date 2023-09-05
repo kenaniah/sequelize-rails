@@ -24,7 +24,7 @@ module Sequel
       ::Sequel::Rails::Railties::LogSubscriber.backtrace_cleaner.add_filter { |line| line.gsub(::Rails.root.to_s + File::SEPARATOR, "") }
 
       # Config initialization
-      config.app_generators.orm :sequelize_rails, migration: :sequel_migration
+      config.app_generators.orm :sequel
       config.sequel = ActiveSupport::OrderedOptions.new
 
       initializer "sequel.plugins" do
@@ -63,6 +63,12 @@ module Sequel
 
       rake_tasks do
         load File.expand_path("../tasks.rake", __dir__)
+      end
+
+      generators do
+        require "sequel/generators/application_record_generator"
+        require "sequel/generators/migration_generator"
+        require "sequel/generators/model_generator"
       end
     end
   end
