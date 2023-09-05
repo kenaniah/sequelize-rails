@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sequelize-rails (0.6.0)
+    sequelize-rails (0.6.1)
       activerecord (>= 6.0.0)
       rails (>= 6.0.0)
       sequel (>= 5.0.0)

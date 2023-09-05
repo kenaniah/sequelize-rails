@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.6.1] - 2023-09-04
+
+- Migrations now generate SQL files by default
+
 ## [0.6.0] - 2023-09-04
 
 - Adds migration generator
