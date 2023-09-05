@@ -1,13 +1,10 @@
 Sequel.migration do
+  transaction
   up do
-    transaction do
-      run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_up.sql"))
-    end
+    run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_up.sql"))
   end
 
   down do
-    transaction do
-      run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_down.sql"))
-    end
+    run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_down.sql"))
   end
 end
