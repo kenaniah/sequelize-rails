@@ -15,6 +15,8 @@ module Sequel
 
       def create_migration_file
         migration_template "migration.rb.erb", "db/migrate/#{file_name}.rb"
+        migration_template "up.sql.erb", "db/migrate/#{file_name}_up.sql"
+        migration_template "down.sql.erb", "db/migrate/#{file_name}_down.sql"
       end
     end
   end

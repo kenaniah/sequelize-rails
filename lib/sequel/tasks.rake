@@ -141,7 +141,17 @@ db_namespace = namespace ns do
     end
 
     desc "Rolls back the last migration and re-runs it"
-    task redo: [:down, :up]
+    task redo: [:connection] do
+      # down
+      target = (migrator.applied_migrations[-2] || "0_").split("_", 2).first.to_i
+      migrator(target: target).run
+      # up
+      pending = migrator.migration_tuples.first
+      if pending
+        target = pending[1].split("_", 2).first.to_i
+        migrator(target: target).run
+      end
+    end
 
     desc "Displays the status of the database migrations"
     task status: [:connection] do

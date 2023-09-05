@@ -1,9 +1,13 @@
 Sequel.migration do
   up do
-    # Add forward migration code here
+    transaction do
+      run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_up.sql"))
+    end
   end
 
   down do
-    # Add rollback migration code here
+    transaction do
+      run File.read(File.join(File.dirname(__FILE__), "#{File.basename(__FILE__, ".rb")}_down.sql"))
+    end
   end
 end
