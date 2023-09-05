@@ -179,7 +179,7 @@ db_namespace = namespace ns do
   # task restore: [:connection] do
   # end
 
-  desc "Rolls back the last migration"
+  desc "Alias of #{ns}:migrate:down"
   task rollback: [:"migrate:down"]
 
   namespace :schema do

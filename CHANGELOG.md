@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+- Adjusts the description of the `db:rollback` rake task
+
+## [0.6.2] - 2023-09-05
+
+- Updates the Sequel migration to use Sequel's preferred transaction semantics
+
 ## [0.6.1] - 2023-09-04
 
 - Migrations now generate SQL files by default
