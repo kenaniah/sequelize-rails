@@ -12,3 +12,9 @@ appraise "rails-7" do
   gem "rails", "~> 7"
   gem "sequel", "~> 5"
 end
+
+appraise "latest" do
+  gem "activerecord"
+  gem "rails"
+  gem "sequel"
+end

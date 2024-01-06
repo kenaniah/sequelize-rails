@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Dummy
   class Application < Rails::Application
-    config.load_defaults 6.1
+    config.load_defaults Rails.version.split(".")[0..1].join(".")
     config.api_only = true
     config.eager_load = false
   end
