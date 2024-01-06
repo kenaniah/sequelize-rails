@@ -67,7 +67,7 @@ module Sequel
           end
 
           name = colorize_payload_name(name, payload[:name])
-          sql = color(sql, sql_color(sql), true) if colorize_logging
+          sql = color(sql, sql_color(sql), bold: true) if colorize_logging
 
           debug "  #{name}  #{sql}#{binds}"
         end
@@ -95,30 +95,30 @@ module Sequel
 
         def colorize_payload_name(name, payload_name)
           if payload_name.blank? || payload_name == "SQL" # SQL vs Model Load/Exists
-            color(name, WHITE, true)
+            color(name, :white, bold: true)
           else
-            color(name, CYAN, true)
+            color(name, :cyan, bold: true)
           end
         end
 
         def sql_color(sql)
           case sql
           when /\A\s*rollback/mi
-            RED
+            :red
           when /select .*for update/mi, /\A\s*lock/mi
-            CYAN
+            :cyan
           when /\A\s*select/i
-            CYAN
+            :cyan
           when /\A\s*insert/i
-            GREEN
+            :green
           when /\A\s*update/i
-            YELLOW
+            :yellow
           when /\A\s*delete/i
-            RED
+            :red
           when /transaction\s*\Z/i, /\A\s*begin/i, /\A\s*commit/i
-            BLUE
+            :blue
           else
-            MAGENTA
+            :magenta
           end
         end
 

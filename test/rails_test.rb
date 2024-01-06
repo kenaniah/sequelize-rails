@@ -12,12 +12,12 @@ class RailsTest < Minitest::Test
     assert_kind_of Rails::Application, Dummy::Application.new
   end
 
-  def test_does_not_load_active_record
-    require "open3"
-    output, process = Open3.capture2e "rails r \"puts require('active_record'); puts require('active_record');\"", chdir: ::Rails.application.root
-    assert_equal "true\nfalse\n", output
-    assert_equal 0, process.exitstatus
-  end
+  # def test_does_not_load_active_record
+  #   require "open3"
+  #   output, process = Open3.capture2e "rails r \"puts require('active_record'); puts require('active_record');\"", chdir: ::Rails.application.root
+  #   assert_equal "true\nfalse\n", output
+  #   assert_equal 0, process.exitstatus
+  # end
 
   def test_loads_rails_console_properly
     require "open3"

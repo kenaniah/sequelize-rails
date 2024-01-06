@@ -30,7 +30,7 @@ m = Module.new do
       if update_index && update_index.succ == i && a =~ Gem::Version::ANCHORED_VERSION_PATTERN
         bundler_version = a
       end
-      next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/o
+      next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/
       bundler_version = $1
       update_index = i
     end
@@ -41,7 +41,7 @@ m = Module.new do
     gemfile = ENV["BUNDLE_GEMFILE"]
     return gemfile if gemfile && !gemfile.empty?
 
-    File.expand_path("../../Gemfile", __FILE__)
+    File.expand_path("../Gemfile", __dir__)
   end
 
   def lockfile
@@ -56,13 +56,14 @@ m = Module.new do
   def lockfile_version
     return unless File.file?(lockfile)
     lockfile_contents = File.read(lockfile)
-    return unless lockfile_contents =~ /\n\nBUNDLED WITH\n\s{2,}(#{Gem::Version::VERSION_PATTERN})\n/o
+    return unless lockfile_contents =~ /\n\nBUNDLED WITH\n\s{2,}(#{Gem::Version::VERSION_PATTERN})\n/
     Regexp.last_match(1)
   end
 
   def bundler_requirement
     @bundler_requirement ||=
-      env_var_version || cli_arg_version ||
+      env_var_version ||
+      cli_arg_version ||
       bundler_requirement_for(lockfile_version)
   end
 
@@ -71,13 +72,7 @@ m = Module.new do
 
     bundler_gem_version = Gem::Version.new(version)
 
-    requirement = bundler_gem_version.approximate_recommendation
-
-    return requirement unless Gem::Version.new(Gem::VERSION) < Gem::Version.new("2.7.0")
-
-    requirement += ".a" if bundler_gem_version.prerelease?
-
-    requirement
+    bundler_gem_version.approximate_recommendation
   end
 
   def load_bundler!
